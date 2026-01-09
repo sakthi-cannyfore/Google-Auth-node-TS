@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { model, Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -9,7 +9,7 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    passwordHash: {
+    password: {
       type: String,
       required: true,
     },
@@ -18,7 +18,7 @@ const userSchema = new Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-    isEmailVerified: {
+    isEmailveryfied: {
       type: Boolean,
       default: false,
     },
