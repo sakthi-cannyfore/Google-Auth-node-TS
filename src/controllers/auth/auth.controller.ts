@@ -12,6 +12,7 @@ import {
   verifyRefreshToken,
 } from "../../lib/token";
 import crypto from "crypto";
+import { authenticator } from "otplib";
 
 function getAppUrl() {
   return process.env.APP_URL || `http://localhost:${process.env.PORT}`;
@@ -119,6 +120,7 @@ export async function verifyEmailHandler(req: Request, res: Response) {
         message: "Email is already verified ",
       });
     }
+
     user.isEmailveryfied = true;
     await user.save();
     return res.status(200).json({
@@ -144,7 +146,7 @@ export async function loginHandler(req: Request, res: Response) {
       });
     }
 
-    const { email, password } = result.data;
+    const { email, password, twoFactorCode } = result.data;
     const nomalizedEmail = email.toLowerCase().trim();
 
     const user = await User.findOne({ email: nomalizedEmail });
@@ -167,6 +169,57 @@ export async function loginHandler(req: Request, res: Response) {
       return res.status(403).json({
         message: "Please verify your Email check the mail",
       });
+    }
+
+    // if (user.twoFactorEnabled) {
+    //   if (!twoFactorCode || typeof twoFactorCode !== "string") {
+    //     return res.status(400).json({
+    //       message: "Two Factor code is Required ",
+    //     });
+    //   }
+
+    //   if (!user.twoFactorSecret) {
+    //     return res.status(400).json({
+    //       message: "Two factor misconfigured for this account ",
+    //     });
+    //   }
+
+    //   // important note if user enabled the 2fauth should verify the code
+
+    //   const verify2fa = authenticator.check(
+    //     twoFactorCode,
+    //     user.twoFactorSecret
+    //   );
+
+    //   if (!verify2fa) {
+    //     return res.status(400).json({
+    //       message: "Invalid Two Factor code ",
+    //     });
+    //   }
+    // }
+
+    console.log("### USER ###", user);
+
+    if (user.twoFactorEnabled) {
+      if (!twoFactorCode || typeof twoFactorCode !== "string") {
+        return res.status(400).json({
+          message: "Two Factor code is required",
+        });
+      }
+
+      if (!user.twoFactorSecret) {
+        return res.status(400).json({
+          message: "Two-factor authentication is misconfigured",
+        });
+      }
+
+      const isValid = authenticator.check(twoFactorCode, user.twoFactorSecret);
+
+      if (!isValid) {
+        return res.status(400).json({
+          message: "Invalid Two Factor code",
+        });
+      }
     }
 
     const accessToken = await CreateAccessToken(
