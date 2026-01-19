@@ -24,3 +24,11 @@ GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_REDIRECT_URI=
 ```
+
+--- 
+# Run the QRcode in Terminal and scan it 
+
+```
+npx ts-node scripts/totp-qr.ts "otpauth://totp/< Your Secret code here >"
+
+```
