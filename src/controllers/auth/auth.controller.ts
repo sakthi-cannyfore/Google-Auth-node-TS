@@ -171,33 +171,6 @@ export async function loginHandler(req: Request, res: Response) {
       });
     }
 
-    // if (user.twoFactorEnabled) {
-    //   if (!twoFactorCode || typeof twoFactorCode !== "string") {
-    //     return res.status(400).json({
-    //       message: "Two Factor code is Required ",
-    //     });
-    //   }
-
-    //   if (!user.twoFactorSecret) {
-    //     return res.status(400).json({
-    //       message: "Two factor misconfigured for this account ",
-    //     });
-    //   }
-
-    //   // important note if user enabled the 2fauth should verify the code
-
-    //   const verify2fa = authenticator.check(
-    //     twoFactorCode,
-    //     user.twoFactorSecret
-    //   );
-
-    //   if (!verify2fa) {
-    //     return res.status(400).json({
-    //       message: "Invalid Two Factor code ",
-    //     });
-    //   }
-    // }
-
     console.log("### USER ###", user);
 
     if (user.twoFactorEnabled) {

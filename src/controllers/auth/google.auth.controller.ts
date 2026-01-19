@@ -128,7 +128,6 @@ export async function GoogleCallbackHandler(req: Request, res: Response) {
       },
     });
 
-    // console.log("this is test token ", tokens);
   } catch (error) {
     console.log("GoogleCallback Handler Error ", error);
     return res.status(500).json({ message: "internal server error" });

@@ -11,16 +11,13 @@ export async function RequireAuth(
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res
-        .status(401)
-        .json({
-          message:
-            "Authorization header missing or Your not user cannot access the pege",
-        });
+      return res.status(401).json({
+        message:
+          "Authorization header missing or Your not user cannot access the pege",
+      });
     }
 
     const token = authHeader.split("Bearer ")[1];
-    // const token = authHeader.startsWith("Bearer ")[1]
 
     if (!token) {
       return res.status(401).json({ message: "Token missing" });

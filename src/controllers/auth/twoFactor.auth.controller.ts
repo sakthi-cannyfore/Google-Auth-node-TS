@@ -94,8 +94,6 @@ export async function VerifyTwoFactorAuth(req: Request, res: Response) {
       message: "2F Authentication Enabled",
       twoFactorEnabled: true,
     });
-
-    // const getToken = authenticator.
   } catch (error) {
     console.log("2F VerifyTwoFactorAuth Error ", error);
     return res.status(500).json({

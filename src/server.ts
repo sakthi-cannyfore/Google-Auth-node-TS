@@ -6,8 +6,8 @@ import http from "http";
 dotenv.config();
 
 async function StartServer() {
-    try {
-      await Database();
+  try {
+    await Database();
     const server = http.createServer(app);
     server.listen(process.env.PORT, () => {
       console.log(`Sever is Running ${process.env.PORT} 🍏`);
