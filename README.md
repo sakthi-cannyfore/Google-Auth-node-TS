@@ -1,6 +1,10 @@
 # Google Authentication 
 
-`.env
+---
+# .env
+
+```
+
  NODE_ENV=devolepment
 PORT=5000
 
@@ -19,5 +23,4 @@ EMAIL_FROM=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_REDIRECT_URI=
-
-`
+```
