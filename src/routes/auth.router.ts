@@ -8,7 +8,15 @@ import {
   ResetPasswordHandler,
   verifyEmailHandler,
 } from "../controllers/auth/auth.controller";
-import { GoogleAuthStartHandler, GoogleCallbackHandler } from "../controllers/auth/google.auth.controller";
+import {
+  GoogleAuthStartHandler,
+  GoogleCallbackHandler,
+} from "../controllers/auth/google.auth.controller";
+import { RequireAuth } from "../middlewares/requireAuth";
+import {
+  twoFactorAuthentication,
+  VerifyTwoFactorAuth,
+} from "../controllers/auth/twoFactor.auth.controller";
 
 const router = Router();
 
@@ -23,5 +31,9 @@ router.post("/reset-password", ResetPasswordHandler);
 // google authentication test
 router.get("/google", GoogleAuthStartHandler);
 router.get("/google/callback", GoogleCallbackHandler);
+
+// 2fauth routes
+router.post("/2fauth/setup", RequireAuth, twoFactorAuthentication);
+router.post("/2fauth/verify", RequireAuth, VerifyTwoFactorAuth);
 
 export default router;
