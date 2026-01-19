@@ -1,7 +1,7 @@
 {
   "name": "nodejs-google-auth",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.ts",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
@@ -12,8 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/cors": "^2.8.19",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^4.22.1",
     "google-auth-library": "^10.5.0",
