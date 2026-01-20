@@ -2,7 +2,7 @@ import { UserRegisterForm } from "./components/RegisterForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginUserForm from "./components/LoginUserForm";
+import { LoginForm } from "./components/LoginForm";
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
         />
         <Routes>
           <Route path="/register" element={<UserRegisterForm />} />
-          <Route path="/login" element={<LoginUserForm />} />
+          <Route path="/login" element={<LoginForm />} />
         </Routes>
       </BrowserRouter>
     </div>
