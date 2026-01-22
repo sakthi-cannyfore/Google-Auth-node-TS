@@ -17,7 +17,6 @@ export const RegisterAPi = createAsyncThunk(
   }
 );
 
-
 export const fetchGoogleUser = createAsyncThunk(
   "auth/google-success",
   async (_, { rejectWithValue }) => {
@@ -31,8 +30,6 @@ export const fetchGoogleUser = createAsyncThunk(
     }
   }
 );
-
-
 
 export const setupTwoFactor = createAsyncThunk(
   "auth/setup2fa",
@@ -65,3 +62,37 @@ export const verifyTwoFactor = createAsyncThunk(
     }
   }
 );
+
+export const forgetPassword = createAsyncThunk<
+  string,
+  { email: string },
+  { rejectValue: string }
+>("auth/forgetPassword", async ({ email }, { rejectWithValue }) => {
+  try {
+    const res = await API.post("/auth/forget-password", { email });
+    return res.data.message;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.message || "Something went wrong"
+    );
+  }
+});
+
+export const resetPassword = createAsyncThunk<
+  string,
+  { token: string; password: string },
+  { rejectValue: string }
+>("auth/resetPassword", async ({ token, password }, { rejectWithValue }) => {
+  try {
+    const res = await API.post("/auth/reset-password", {
+      token,
+      password,
+    });
+    console.log(res.data.message);
+    return res.data.message;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.message || "Something went wrong"
+    );
+  }
+});

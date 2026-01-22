@@ -8,6 +8,9 @@ import OAuthSuccess from "./components/OAuthSuccess";
 import { useEffect } from "react";
 import { useAppDispatch } from "./redux/Hook";
 import { setAccessToken } from "./redux/features/LoginSlice";
+import ForgetPassword from "./components/ForgetPassword";
+import ResetPassword from "./components/ResetPassword";
+import PageNotFound from "./components/PageNotFound";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +37,10 @@ const App = () => {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/" element={<Home />} />
           <Route path="/google-success" element={<OAuthSuccess />} />
+          <Route path="/forgetpassword" element={<ForgetPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
+          <Route path="*" element={<PageNotFound />} />
+
         </Routes>
       </BrowserRouter>
     </div>

@@ -40,7 +40,7 @@ export const UserRegisterForm = () => {
 
   return (
     <div className="max-h-screen flex  flex-col justify-center items-center ">
-      <div className="w-100 p-6 my-10">
+      <div className="w-100 p-6 ">
         <Typography variant="h6" className="mb-4 text-center">
           Register
         </Typography>
@@ -105,7 +105,7 @@ export const UserRegisterForm = () => {
       </div>
       <p>
         if you have an already account ? Please{" "}
-        <span className="text-blue-500 underline">
+        <span className="text-blue-500 underline mt-1">
           <a href="/login">Login</a>
         </span>{" "}
         here

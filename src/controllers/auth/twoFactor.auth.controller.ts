@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { User } from "../../models/user.mode";
 import { authenticator } from "otplib";
 export async function twoFactorAuthentication(req: Request, res: Response) {
+  authenticator.options = {
+    window: 1, // allow previous & next 30s window
+  };
   const reqAuth = req as any;
 
   const userAuth = reqAuth.user;
@@ -25,6 +28,18 @@ export async function twoFactorAuthentication(req: Request, res: Response) {
 
     const issuer = "NodeWithTSGoogleAuthentication";
 
+    if (user.twoFactorSecret && user.twoFactorEnabled === false) {
+      const otpUrl = authenticator.keyuri(
+        user.email,
+        "NodeWithTSGoogleAuthentication",
+        user.twoFactorSecret
+      );
+
+      return res.status(200).json({
+        message: "2FA already initialized",
+        otpUrl,
+      });
+    }
     const otpUrl = authenticator.keyuri(user.email, issuer, secret);
 
     user.twoFactorSecret = secret;
@@ -57,7 +72,8 @@ export async function VerifyTwoFactorAuth(req: Request, res: Response) {
   }
 
   try {
-    const { code } = req.body as { code?: string };
+    // const { code } = req.body as { code?: string };
+    const code = (req.body.code as string)?.trim();
 
     if (!code) {
       return res.status(400).json({
@@ -78,6 +94,12 @@ export async function VerifyTwoFactorAuth(req: Request, res: Response) {
         message: "You dont have secret 2F Athentication  ",
       });
     }
+
+    console.log("#########################################", {
+      code,
+      secret: user.twoFactorSecret,
+      now: new Date(),
+    });
 
     const isValid = authenticator.check(code, user.twoFactorSecret);
 

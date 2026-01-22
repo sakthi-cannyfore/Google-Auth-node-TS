@@ -33,8 +33,7 @@ export const SecuritySettings = () => {
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <Typography variant="h5">Security Settings</Typography>
+    <div className=" h-screen flex justify-center items-center mx-auto ">
 
       {twoFactorEnabled ? (
         <Typography color="green"> 2-Step Verification Enabled</Typography>
@@ -44,16 +43,16 @@ export const SecuritySettings = () => {
             <Button
               variant="contained"
               onClick={handleSetup}
-              disabled={loading}
+              disabled={!!otpUrl || loading}
             >
               Enable 2-Step Verification
             </Button>
           )}
 
           {otpUrl && (
-            <>
+            <div className="border max-w-md flex flex-col justify-center items-center">
               <Typography mt={2}>Scan QR Code</Typography>
-              <QRCode value={otpUrl} size={180} />
+              <QRCode value={otpUrl} size={180} className=""/>
 
               <TextField
                 label="Enter 6-digit code"
@@ -66,7 +65,7 @@ export const SecuritySettings = () => {
               <Button variant="contained" onClick={handleVerify}>
                 Verify & Enable
               </Button>
-            </>
+            </div>
           )}
         </>
       )}

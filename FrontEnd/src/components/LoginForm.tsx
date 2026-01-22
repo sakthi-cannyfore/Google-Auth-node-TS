@@ -1,6 +1,6 @@
 import { Fetchlogin } from "../redux/features/LoginSlice";
 import { useAppDispatch, useRootState } from "../redux/Hook";
-import { useNavigate } from "react-router-dom";
+import { Link, Links, useNavigate } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -13,6 +13,8 @@ import { loginSchema } from "./validaition/LoginValidation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
+import ForgetPassword from "./ForgetPassword";
+import ResetPassword from "./ResetPassword";
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -100,7 +102,16 @@ export const LoginForm = () => {
         <span className="text-blue-500 underline">
           <a href="/register">Signup</a>
         </span>
+
+
       </p>
+
+    <span>Are you forget your Password  <Link to={`/forgetpassword`} className="underline text-blue-400">Click here</Link> </span>
+      
+      <div>
+        {/* <ForgetPassword/>
+        <ResetPassword/> */}
+      </div>
     </div>
   );
 };
