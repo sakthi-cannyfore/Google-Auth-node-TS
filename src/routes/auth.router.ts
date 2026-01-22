@@ -9,6 +9,7 @@ import {
   verifyEmailHandler,
 } from "../controllers/auth/auth.controller";
 import {
+  getOAuthUser,
   GoogleAuthStartHandler,
   GoogleCallbackHandler,
 } from "../controllers/auth/google.auth.controller";
@@ -28,12 +29,16 @@ router.post("/logout", Logout);
 router.post("/forget-password", forgetPassword);
 router.post("/reset-password", ResetPasswordHandler);
 
+// 2fauth routes
+router.post("/2fauth/setup", RequireAuth, twoFactorAuthentication);
+router.post("/2fauth/verify", RequireAuth, VerifyTwoFactorAuth);
+
 // google authentication test
 router.get("/google", GoogleAuthStartHandler);
 router.get("/google/callback", GoogleCallbackHandler);
 
-// 2fauth routes
-router.post("/2fauth/setup", RequireAuth, twoFactorAuthentication);
-router.post("/2fauth/verify", RequireAuth, VerifyTwoFactorAuth);
+// Oath 
+router.get("/google/success", getOAuthUser);
+
 
 export default router;

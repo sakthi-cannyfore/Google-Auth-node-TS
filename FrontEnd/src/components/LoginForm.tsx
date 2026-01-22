@@ -1,5 +1,6 @@
 import { Fetchlogin } from "../redux/features/LoginSlice";
 import { useAppDispatch, useRootState } from "../redux/Hook";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -11,9 +12,16 @@ import type { LoginFormValidation } from "./validaition/LoginValidation";
 import { loginSchema } from "./validaition/LoginValidation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const { loading, error, accessToken } = useRootState((state) => state.login);
+  const navigate = useNavigate();
+  const { loading, error, accessToken, twoFactorEnabled} = useRootState(
+    (state) => state.auth
+  );
+
+  console.log("twoFactorEnabled", twoFactorEnabled);
+
   const {
     register,
     handleSubmit,
@@ -22,17 +30,21 @@ export const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onsubmit = (data: LoginFormValidation) => {
-    dispatch(Fetchlogin(data));
-    if (accessToken != undefined) {
-      const token = localStorage.setItem("accesstoken", accessToken);
-      console.log("Token", token);
+  const onsubmit = async (data: LoginFormValidation) => {
+    try {
+      await dispatch(Fetchlogin(data)).unwrap();
+      navigate("/", { replace: true });
+      toast.success("Logged in successfully ");
+    } catch (error: any) {
+      toast.error(error);
     }
   };
   return (
-    <div>
-      <Typography variant="h2">LoginForm</Typography>
-      <form onSubmit={handleSubmit(onsubmit)}>
+    <div className=" max-h-screen flex flex-col justify-center items-center">
+      <form onSubmit={handleSubmit(onsubmit)} className="w-100">
+        <Typography variant="h2" className="text-center">
+          Login
+        </Typography>
         <Box
           maxWidth={400}
           mx="auto"
@@ -56,15 +68,15 @@ export const LoginForm = () => {
             helperText={errors?.password?.message}
           />
 
-          {/* {accessToken && (
+          {twoFactorEnabled && (
             <TextField
-              {...register("accessToken")}
+              {...register("twoFactorCode")}
               label="Access Code"
               fullWidth
-              error={!!errors.accessToken}
-              helperText={errors?.accessToken?.message}
+              error={!!errors.twoFactorCode}
+              helperText={errors?.twoFactorCode?.message}
             />
-          )} */}
+          )}
 
           <Button variant="contained" disabled={loading} type="submit">
             {loading ? <CircularProgress size={24} /> : " Login "}
@@ -76,6 +88,12 @@ export const LoginForm = () => {
           </Typography>
         )}
       </form>
+      <p>
+        If You are new to here please{" "}
+        <span className="text-blue-500 underline">
+          <a href="/register">Signup</a>
+        </span>
+      </p>
     </div>
   );
 };

@@ -174,7 +174,7 @@ export async function loginHandler(req: Request, res: Response) {
     console.log("### USER ###", user);
 
     if (user.twoFactorEnabled) {
-      if (!twoFactorCode || typeof twoFactorCode !== "string") {
+      if (!twoFactorCode) {
         return res.status(400).json({
           message: "Two Factor code is required",
         });
@@ -298,7 +298,12 @@ export async function refreshHandler(req: Request, res: Response) {
 }
 
 export async function Logout(_req: Request, res: Response) {
-  res.clearCookie("refresh_token", { path: "/" });
+  res.clearCookie("refresh_token", {
+    path: "/login",
+    httpOnly: true,
+    sameSite: "strict",
+    secure: true,
+  });
   return res.status(200).json({
     message: "Log Out ",
   });
