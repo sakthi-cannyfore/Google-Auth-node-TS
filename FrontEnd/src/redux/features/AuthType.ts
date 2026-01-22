@@ -14,6 +14,7 @@ export interface AuthState {
   accessToken?: string | null;
   otpUrl?: string | null;
   twoFactorEnabled?: boolean;
+  isEnabled?:boolean;
   user: {
     id: string;
     name: string;

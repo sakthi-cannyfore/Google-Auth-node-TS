@@ -8,6 +8,7 @@ const initialState: AuthState = {
   user: null,
   accessToken: null,
   twoFactorEnabled: false,
+  isEnabled: false,
   otpUrl: null,
 };
 
@@ -43,6 +44,7 @@ const AuthenticationSlice = createSlice({
       })
       .addCase(setupTwoFactor.fulfilled, (state, action) => {
         state.loading = false;
+        state.isEnabled = true;
         state.otpUrl = action.payload.otpUrl;
       })
       .addCase(setupTwoFactor.rejected, (state, action) => {
@@ -52,6 +54,7 @@ const AuthenticationSlice = createSlice({
 
       .addCase(verifyTwoFactor.fulfilled, (state) => {
         state.twoFactorEnabled = true;
+        state.isEnabled = true;
         state.otpUrl = null;
       });
   },

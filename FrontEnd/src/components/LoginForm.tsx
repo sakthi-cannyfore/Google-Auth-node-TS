@@ -16,11 +16,11 @@ import { toast } from "react-toastify";
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error, accessToken, twoFactorEnabled} = useRootState(
-    (state) => state.auth
-  );
+  const { loading, error, accessToken, twoFactorEnabled, isEnabled } =
+    useRootState((state) => state.auth);
 
   console.log("twoFactorEnabled", twoFactorEnabled);
+  console.log("isEnabled", isEnabled);
 
   const {
     register,
@@ -68,7 +68,7 @@ export const LoginForm = () => {
             helperText={errors?.password?.message}
           />
 
-          {twoFactorEnabled && (
+          {isEnabled && (
             <TextField
               {...register("twoFactorCode")}
               label="Access Code"
@@ -79,7 +79,14 @@ export const LoginForm = () => {
           )}
 
           <Button variant="contained" disabled={loading} type="submit">
-            {loading ? <CircularProgress size={24} /> : " Login "}
+            {loading ? (
+              <>
+                <span className="text-blue-500">Sending a mail ... </span>
+                <CircularProgress size={24} />
+              </>
+            ) : (
+              " Login "
+            )}
           </Button>
         </Box>
         {error && (

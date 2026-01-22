@@ -13,7 +13,7 @@ const OAuthSuccess = () => {
     dispatch(fetchGoogleUser())
       .unwrap()
       .then(() => {
-        toast.success("Logged in with Google 🎉");
+        toast.success("Logged in with Google ");
         navigate("/", { replace: true });
       })
       .catch(() => {
